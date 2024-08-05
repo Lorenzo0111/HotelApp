@@ -1,14 +1,12 @@
+import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth, { DefaultSession } from "next-auth";
 import GitHub from "next-auth/providers/github";
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "./prisma";
-import { User } from "@prisma/client";
 
 declare module "next-auth" {
   interface Session {
     user: {
       id: string;
-      admin: boolean;
     } & DefaultSession["user"];
   }
 }
@@ -24,10 +22,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
       return token;
     },
-    async session({ session, token, user }) {
+    async session({ session, token }) {
       session.user.id = token.id as string;
-      session.user.admin = (user as User).admin;
-
       return session;
     },
   },
