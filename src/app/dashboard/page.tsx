@@ -1,5 +1,4 @@
-import Room from "@/components/dashboard/room";
-import { Button } from "@/components/ui/button";
+import { CreateRoom, Room } from "@/components/dashboard/room";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
@@ -27,7 +26,7 @@ export default async function Home() {
     <main className="p-4">
       <div className="flex justify-between w-full">
         <h1 className="font-extrabold text-2xl">Rooms</h1>
-        <Button>Add new</Button>
+        <CreateRoom />
       </div>
 
       <div className="flex gap-3 flex-wrap">
