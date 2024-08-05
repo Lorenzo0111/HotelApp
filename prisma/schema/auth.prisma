@@ -10,6 +10,7 @@ model User {
 
     sessions Session[]
     accounts Account[]
+    bookings Booking[]
 }
 
 model Account {
