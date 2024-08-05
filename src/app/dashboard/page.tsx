@@ -5,13 +5,13 @@ import { redirect } from "next/navigation";
 
 async function verifyAdmin() {
   const session = await auth();
-  if (!session) return redirect("/");
+  if (!session) return redirect("/login");
 
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
     select: { admin: true },
   });
-  if (!user?.admin) return redirect("/");
+  if (!user?.admin) return redirect("/login");
 }
 
 async function getRooms() {

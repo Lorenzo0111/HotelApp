@@ -7,7 +7,7 @@ const requestSchema = z.object({
   roomId: z.string(),
   startDate: z.string().date(),
   endDate: z.string().date(),
-  people: z.number().min(0),
+  people: z.number().min(1),
 });
 export const POST = auth(async (req) => {
   if (!req.auth?.user)
