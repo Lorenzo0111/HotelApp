@@ -17,17 +17,27 @@ import {
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
+function RoomContent({ room }: { room: Room }) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{room.name}</CardTitle>
+        <CardDescription>
+          <span className="font-bold">{room.capacity}</span> people
+        </CardDescription>
+      </CardHeader>
+    </Card>
+  );
+}
+
 export function Room({ room, onClick }: { room: Room; onClick?: () => void }) {
+  if (!onClick) {
+    return <RoomContent room={room} />;
+  }
+
   return (
     <button className="text-left" onClick={onClick}>
-      <Card>
-        <CardHeader>
-          <CardTitle>{room.name}</CardTitle>
-          <CardDescription>
-            <span className="font-bold">{room.capacity}</span> people
-          </CardDescription>
-        </CardHeader>
-      </Card>
+      <RoomContent room={room} />
     </button>
   );
 }
