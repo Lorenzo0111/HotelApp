@@ -1,8 +1,6 @@
-import { CreateRoom, Room } from "@/components/dashboard/room";
-import { Button } from "@/components/ui/button";
+import { Booking } from "@/components/dashboard/booking";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 async function verifyAdmin() {
@@ -16,30 +14,31 @@ async function verifyAdmin() {
   if (!user?.admin) return redirect("/login");
 }
 
-async function getRooms() {
-  return prisma.room.findMany();
+async function getBookings() {
+  return prisma.booking.findMany({
+    where: {
+      OR: [
+        { startDate: { gte: new Date() } },
+        { endDate: { gte: new Date() } },
+      ],
+    },
+    include: { room: true },
+  });
 }
 
 export default async function Home() {
   await verifyAdmin();
-  const rooms = await getRooms();
+  const bookings = await getBookings();
 
   return (
     <main className="p-4">
       <div className="flex justify-between w-full">
-        <h1 className="font-extrabold text-2xl">Rooms</h1>
-
-        <div className="flex gap-3">
-          <CreateRoom />
-          <Button asChild variant="secondary">
-            <Link href="/dashboard/bookings">Bookings</Link>
-          </Button>
-        </div>
+        <h1 className="font-extrabold text-2xl">Bookings</h1>
       </div>
 
       <div className="flex gap-3 flex-wrap">
-        {rooms.map((room) => (
-          <Room key={room.id} room={room} />
+        {bookings.map((booking) => (
+          <Booking key={booking.id} booking={booking} />
         ))}
       </div>
     </main>
