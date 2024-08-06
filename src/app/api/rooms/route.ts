@@ -1,40 +1,31 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-export const GET = async () => {
+export const GET = async (req: NextRequest) => {
+  const query = req.nextUrl.searchParams;
+  const startDate =
+    query.get("startDate") || new Date().toISOString().split("T")[0];
+  const endDate =
+    query.get("endDate") || new Date().toISOString().split("T")[0];
+  const people = query.get("people") || "0";
+
   const rooms = await prisma.room.findMany({
-    include: {
+    where: {
+      capacity: { gte: parseInt(people) },
       bookings: {
-        where: {
+        none: {
           AND: [
-            {
-              startDate: {
-                gte: new Date(),
-              },
-            },
-            {
-              endDate: {
-                lte: new Date(),
-              },
-            },
-            {
-              approved: true,
-            },
+            { startDate: { lte: new Date(endDate) } },
+            { endDate: { gte: new Date(startDate) } },
           ],
         },
       },
     },
   });
 
-  return NextResponse.json(
-    rooms.map((room) => ({
-      ...room,
-      bookings: undefined,
-      available: room.bookings.length === 0,
-    }))
-  );
+  return NextResponse.json(rooms);
 };
 
 const requestSchema = z.object({

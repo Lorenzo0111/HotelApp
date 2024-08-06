@@ -17,16 +17,18 @@ import {
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
-export function Room({ room }: { room: Room }) {
+export function Room({ room, onClick }: { room: Room; onClick?: () => void }) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{room.name}</CardTitle>
-        <CardDescription>
-          <span className="font-bold">{room.capacity}</span> people
-        </CardDescription>
-      </CardHeader>
-    </Card>
+    <button className="text-left" onClick={onClick}>
+      <Card>
+        <CardHeader>
+          <CardTitle>{room.name}</CardTitle>
+          <CardDescription>
+            <span className="font-bold">{room.capacity}</span> people
+          </CardDescription>
+        </CardHeader>
+      </Card>
+    </button>
   );
 }
 
