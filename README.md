@@ -12,6 +12,8 @@
 
 HotelApp is a simple and modern solution to manage hotel bookings fast.
 
+https://github.com/user-attachments/assets/db396fe3-f9e4-4942-a969-a1a917d1c3d3
+
 ## Deploying
 
 You'll have to set the following environment variables to setup the dashboard, here is a list of them:
